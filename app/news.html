@@ -1,9 +1,9 @@
 
-<div>
+<div id="news" infinite-scroll="loadArticles(30)" infinite-scroll-disabled="false" infinite-scroll-distance="1">
 <h1> Новости </h1>
 <ul>
 	<li ng-repeat="article in articles">
-	   <img ng-src="http:{{article.publisher_logo_url}}" width="20"> <a ng-href="{{article.url}}" target="_blank"> {{article.title}} </a>
+	   <img ng-src="http:{{article.publisher_logo_url}}" width="20"> </img> <a ng-href="{{article.url}}" target="_blank"> {{article.title}} </a> 
 	</li>
 </ul>
 </div>

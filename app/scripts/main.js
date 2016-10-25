@@ -1,24 +1,29 @@
 (function() {
+
 	'use strict';
-                	
-	var app = angular.module("mynews", ['ui.router']);
+
+	angular.module('infinite-scroll').value('THROTTLE_MILLISECONDS', 2000)             
+   	
+	var app = angular.module('mynews', ['ui.router','infinite-scroll']);
 	
 	app.config(function($stateProvider, $urlRouterProvider) {
 
     			$stateProvider									
     			.state('news', {
-			      url: "/",
-			      controller: "NewsController",	 
-			      templateUrl: "news.html"
+			      url: '/',
+			      controller: 'NewsController',	 
+			      templateUrl: 'news.html'
  			})
     			.state('sources', {
-			      url: "/sources",
-			      controller: "SourcesController",
-			      templateUrl: "sources.html"
+			      url: '/sources',
+			      controller: 'SourcesController',
+			      templateUrl: 'sources.html'
  			});
     			$urlRouterProvider.otherwise('/');                           						
 			
 	}); 
+
+
 	
 	// Служба загрузки источников
 	app.factory('SourcesService', function($q) {
@@ -73,19 +78,23 @@
 
 	function MainController($scope)
 	{
-	    $scope.hello = "Новостной агрегатор";	   	
+	    $scope.hello = 'Новостной агрегатор';	   	
 	}
 
-	app.controller("MainController", MainController);			
+	app.controller('MainController', MainController);			
 
 
 	// NewsController
-	app.controller("NewsController", function ($scope,NewsService,SourcesService) {
-		
+	app.controller('NewsController', function ($scope,NewsService,SourcesService) {
+	  		
 	  $scope.articles = [];
 
 	  // загрузка статей
 	  $scope.loadArticles = function(cnt)  { 
+		
+		 if ($('#news').attr('infinite-scroll-disabled') == 'true') return;
+		 $('#news').attr('infinite-scroll-disabled','true');			 
+	
 		 var publishers = [];
 	 	 var articleIds = [];
 
@@ -103,18 +112,21 @@
 		var promiseObj=NewsService.getNews(cnt,publishers,articleIds);
 	        promiseObj.then(function(articles) { 			
                       	$scope.articles = $scope.articles.concat(articles);							
+			$('#news').attr('infinite-scroll-disabled','false');	
 		});		 
 
 	   };	
 
            
 	   // событие прокрутки    	   
+	   /*
       	   $(window).scroll(function() {
         	if($(window).scrollTop()+$(window).height()==($(document).height())){ 		 
 		// если дошли до конца страницы - подгружаем новые статьи
 		$scope.loadArticles(30);   		 
 	     } 
       	   });
+	   */
 	   
 	   // Начальная загрузка статей
 	   $scope.loadArticles(60); 	
@@ -123,7 +135,7 @@
 	});	
 
 	// SourcesController
-	app.controller("SourcesController", function ($scope,SourcesService) {	   
+	app.controller('SourcesController', function ($scope,SourcesService) {	   
 	        if (SourcesService.sources.length == 0)
 		{
 			var promiseObj=SourcesService.getSources();
