@@ -110,7 +110,7 @@
            
 	   // событие прокрутки    	   
       	   $(window).scroll(function() {
-        	if($(window).scrollTop()+$(window).height()=($(document).height())){ 		 
+        	if($(window).scrollTop()+$(window).height()==($(document).height())){ 		 
 		// если дошли до конца страницы - подгружаем новые статьи
 		$scope.loadArticles(30);   		 
 	     } 
