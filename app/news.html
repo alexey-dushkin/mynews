@@ -1,0 +1,10 @@
+
+<div>
+<h1> Новости </h1>
+<ul>
+	<li ng-repeat="article in articles">
+	   <img ng-src="http:{{article.publisher_logo_url}}" width="20"> <a ng-href="{{article.url}}" target="_blank"> {{article.title}} </a>
+	</li>
+</ul>
+</div>
+

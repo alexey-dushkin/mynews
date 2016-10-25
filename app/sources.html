@@ -1,0 +1,9 @@
+
+<div>
+ 	<h1> Источники </h1>
+	<ul>
+		<li ng-repeat="source in sources">
+	  	    <input type="checkbox" ng-model="source.show"> <img ng-src="http:{{source.logo_url}}" width="20"> {{source.name}} 
+		</li>
+	</ul>
+</div>
